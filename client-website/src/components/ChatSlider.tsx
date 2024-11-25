@@ -93,7 +93,7 @@ export const ChatSlider: React.FC<ChatSliderProps> = ({
       };
       setMessages((prevMessages) => [...prevMessages, assistantMessage]);
 
-      // Rerank the courses based on rankedCourseIds from the response
+      // Rerank the courses based on ranked_course_ids from the response
       if (response.rankedCourseIds && response.rankedCourseIds.length > 0) {
         const rerankedCourses: Course[] = response.rankedCourseIds
           .map((id) => courses.find((course) => course.Number === id))
