@@ -24,7 +24,7 @@ class ChatRequest:
     def __init__(self, messages: List[Message], semesters: str, current_selected_course_id: List[str]):
         self.messages = messages
         self.semesters = semesters
-        self.currentSelectedCourseId = current_selected_course_id
+        self.current_selected_course_id = current_selected_course_id
 
     @staticmethod
     def from_dict(data: Dict) -> 'ChatRequest':
@@ -36,11 +36,11 @@ class ChatRequest:
         return {
             'messages': [message.to_dict() for message in self.messages],
             'semesters': self.semesters,
-            'currentSelectedCourseId': self.currentSelectedCourseId
+            'currentSelectedCourseId': self.current_selected_course_id
         }
 
     def __str__(self):
-        return f"ChatRequest(messages={self.messages}, semesters={self.semesters}, currentSelectedCourseId={self.currentSelectedCourseId})"
+        return f"ChatRequest(messages={self.messages}, semesters={self.semesters}, currentSelectedCourseId={self.current_selected_course_id})"
 
 
 class ChatResponse:

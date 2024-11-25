@@ -14,7 +14,7 @@ def chat() -> Response:
     data: ChatRequest = ChatRequest.from_dict(request.json)
     messages: List[Message] = data.messages
     semesters: str = data.semesters
-    current_selected_course_ids: List[str] = data.currentSelectedCourseId
+    current_selected_course_ids: List[str] = data.current_selected_course_id
 
     # Debugging
     print("=== Received data ===")
