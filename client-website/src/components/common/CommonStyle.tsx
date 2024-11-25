@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { Popover } from 'react-bootstrap';
+import { Button, Popover } from 'react-bootstrap';
+import { WEBSITE_COLOR } from '@/config.tsx';
 
 export const CourseRow = styled.div`
   font-size: 12px;
@@ -59,5 +60,17 @@ export const StyledPopover = styled(Popover)`
     // whats2000: 正式修正彈出視窗位置抖動問題
     position: fixed;
     max-width: 400px;
+  }
+`;
+
+export const StyledButton = styled(Button)`
+  background-color: ${WEBSITE_COLOR.mainColor};
+  border-color: ${WEBSITE_COLOR.mainColor};
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    background-color: ${WEBSITE_COLOR.mainDarkerColor};
+    border-color: ${WEBSITE_COLOR.mainDarkerColor};
   }
 `;

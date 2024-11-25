@@ -430,6 +430,14 @@ class App extends Component<{}, AppState> {
   };
 
   /**
+   * 更新已排序的課程
+   * @param newOrderedCourses {Course[]} 新的已排序課程
+   */
+  updateNewOrderedCourses = (newOrderedCourses: Course[]) => {
+    this.setState({ courses: newOrderedCourses });
+  };
+
+  /**
    * 渲染元件
    * @returns {React.ReactNode} 元件
    */
@@ -450,6 +458,12 @@ class App extends Component<{}, AppState> {
     const slideStyle = {
       marginLeft: isCollapsed ? (window.innerWidth >= 992 ? '-50%' : '0') : '0',
     };
+
+    const semester = this.state.experimentalFeatures.useNewApi
+      ? this.state.experimentalFeatures.selectedSemester
+      : // Extract the semester text from "all_classes_1131_20240909.csv" to "1131"
+        this.state.currentCourseHistoryData.match(/all_classes_(\d{4})/)?.[1] ||
+        '';
 
     return (
       <>
@@ -522,19 +536,27 @@ class App extends Component<{}, AppState> {
                     </Nav.Item>
                   </Nav>
                 </Card.Header>
-                {this.state.activeLeftTab === 'schedule' && (
-                  <ScheduleTable
-                    selectedCourses={selectedCourses}
-                    currentTab={currentTab}
-                    handleCourseSelect={this.handleCourseSelect}
-                    hoveredCourseId={hoveredCourseId}
-                    onCourseHover={this.handleCourseHover}
-                    searchTimeSlot={searchTimeSlot}
-                    toggleSearchTimeSlot={this.toggleSearchTimeSlot}
-                    onCourseClick={this.onCourseClick}
-                  />
-                )}
-                {this.state.activeLeftTab === 'ai' && <ChatSlider />}
+                <Card.Body style={{ padding: 0, height: '100%' }}>
+                  {this.state.activeLeftTab === 'schedule' && (
+                    <ScheduleTable
+                      selectedCourses={selectedCourses}
+                      currentTab={currentTab}
+                      handleCourseSelect={this.handleCourseSelect}
+                      hoveredCourseId={hoveredCourseId}
+                      onCourseHover={this.handleCourseHover}
+                      searchTimeSlot={searchTimeSlot}
+                      toggleSearchTimeSlot={this.toggleSearchTimeSlot}
+                      onCourseClick={this.onCourseClick}
+                    />
+                  )}
+                  {this.state.activeLeftTab === 'ai' && (
+                    <ChatSlider
+                      selectedSemester={semester}
+                      courses={courses}
+                      updateNewOrderedCourses={this.updateNewOrderedCourses}
+                    />
+                  )}
+                </Card.Body>
               </Card>
             </SlideColContainer>
 

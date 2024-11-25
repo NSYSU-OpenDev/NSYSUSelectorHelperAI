@@ -14,6 +14,7 @@
     "@dnd-kit/sortable": "^8.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@swc/plugin-styled-components": "^5.0.0",
+    "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "gh-pages": "^6.2.0",
     "papaparse": "^5.4.1",
@@ -24,6 +25,7 @@
     "react-dom": "^18.3.1",
     "react-ga4": "^2.1.0",
     "react-lazy-load-image-component": "^1.6.2",
+    "react-markdown": "^9.0.1",
     "react-syntax-highlighter": "^15.6.1",
     "react-virtuoso": "^4.12.0",
     "styled-components": "^6.1.13"

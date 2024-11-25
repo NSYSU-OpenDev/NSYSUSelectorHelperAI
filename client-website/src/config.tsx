@@ -310,3 +310,6 @@ export const WEBSITE_COLOR = {
   mainLighterColor: '#b2e2df',
   boxShadowColor: 'rgba(0, 158, 150, 0.25)',
 };
+
+export const ASSISTANT_API_URL =
+  'https://nsysu-course-selector-api.herokuapp.com';

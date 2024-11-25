@@ -14,26 +14,15 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { Button, Card, InputGroup, Offcanvas } from 'react-bootstrap';
+import { Card, InputGroup, Offcanvas } from 'react-bootstrap';
 import { SortNumericUp } from 'react-bootstrap-icons';
 import styled from 'styled-components';
 
 import type { Course } from '@/types';
-import { COURSE_DETECTIVE_ELEMENTS, WEBSITE_COLOR } from '@/config';
+import { COURSE_DETECTIVE_ELEMENTS } from '@/config';
 import { calculateTotalCreditsAndHours } from '@/utils';
 import { SortableItem } from './ListInformation/SortableItem';
-
-const StyledButton = styled(Button)`
-  background-color: ${WEBSITE_COLOR.mainColor};
-  border-color: ${WEBSITE_COLOR.mainColor};
-  display: flex;
-  align-items: center;
-
-  &:hover {
-    background-color: ${WEBSITE_COLOR.mainDarkerColor};
-    border-color: ${WEBSITE_COLOR.mainDarkerColor};
-  }
-`;
+import { StyledButton } from '#/common/CommonStyle.tsx';
 
 const ButtonsRow = styled.div`
   display: flex;
