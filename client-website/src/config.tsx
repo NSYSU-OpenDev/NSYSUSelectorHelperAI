@@ -312,4 +312,4 @@ export const WEBSITE_COLOR = {
 };
 
 export const ASSISTANT_API_URL =
-  'https://nsysu-course-selector-api.herokuapp.com';
+  'http://127.0.0.1:5000/';
