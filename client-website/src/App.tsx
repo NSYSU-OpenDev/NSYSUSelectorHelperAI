@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Col, Row } from 'react-bootstrap';
+import { Card, Col, Nav, Row } from 'react-bootstrap';
 import { ArrowBarRight, ArrowBarLeft } from 'react-bootstrap-icons';
 import ReactGA from 'react-ga4';
 
-import Header from './components/Header';
-import LoadingSpinner from './components/LoadingSpinner';
-import ScheduleTable from './components/ScheduleTable';
-import SelectorSetting from './components/SelectorSetting';
-import EntryNotification from './components/EntryNotification';
+import Header from '#/Header';
+import LoadingSpinner from '#/LoadingSpinner';
+import ScheduleTable from '#/ScheduleTable';
+import SelectorSetting from '#/SelectorSetting';
+import EntryNotification from '#/EntryNotification';
+import { ChatSlider } from '#/ChatSlider';
 import type {
   AcademicYear,
   Course,
@@ -80,6 +81,7 @@ interface AppState {
     availableSemesters: AcademicYear;
   };
   clickedCourseId?: string | null;
+  activeLeftTab: string;
 }
 
 class App extends Component<{}, AppState> {
@@ -103,6 +105,7 @@ class App extends Component<{}, AppState> {
       },
     },
     clickedCourseId: null,
+    activeLeftTab: 'schedule',
   };
 
   componentDidMount() {
@@ -484,16 +487,55 @@ class App extends Component<{}, AppState> {
               className='d-flex flex-column'
               lg={6}
             >
-              <ScheduleTable
-                selectedCourses={selectedCourses}
-                currentTab={currentTab}
-                handleCourseSelect={this.handleCourseSelect}
-                hoveredCourseId={hoveredCourseId}
-                onCourseHover={this.handleCourseHover}
-                searchTimeSlot={searchTimeSlot}
-                toggleSearchTimeSlot={this.toggleSearchTimeSlot}
-                onCourseClick={this.onCourseClick}
-              />
+              <Card>
+                <Card.Header>
+                  <Nav variant='tabs' defaultActiveKey={currentTab}>
+                    <Nav.Item
+                      onClick={() =>
+                        this.setState({ activeLeftTab: 'schedule' })
+                      }
+                    >
+                      <Nav.Link
+                        className={
+                          this.state.activeLeftTab === 'schedule'
+                            ? 'bg-secondary-subtle border-bottom'
+                            : ''
+                        }
+                        active={this.state.activeLeftTab === 'schedule'}
+                      >
+                        課表
+                      </Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item
+                      onClick={() => this.setState({ activeLeftTab: 'ai' })}
+                    >
+                      <Nav.Link
+                        className={
+                          this.state.activeLeftTab === 'ai'
+                            ? 'bg-secondary-subtle border-bottom'
+                            : ''
+                        }
+                        active={this.state.activeLeftTab === 'ai'}
+                      >
+                        AI智慧搜尋
+                      </Nav.Link>
+                    </Nav.Item>
+                  </Nav>
+                </Card.Header>
+                {this.state.activeLeftTab === 'schedule' && (
+                  <ScheduleTable
+                    selectedCourses={selectedCourses}
+                    currentTab={currentTab}
+                    handleCourseSelect={this.handleCourseSelect}
+                    hoveredCourseId={hoveredCourseId}
+                    onCourseHover={this.handleCourseHover}
+                    searchTimeSlot={searchTimeSlot}
+                    toggleSearchTimeSlot={this.toggleSearchTimeSlot}
+                    onCourseClick={this.onCourseClick}
+                  />
+                )}
+                {this.state.activeLeftTab === 'ai' && <ChatSlider />}
+              </Card>
             </SlideColContainer>
 
             <FixedHeightCol
