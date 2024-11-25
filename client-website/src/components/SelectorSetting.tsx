@@ -77,27 +77,6 @@ class SelectorSetting extends Component<
   };
 
   /**
-   * 計算總學分與總時數
-   * @param selectedCourses {Set} 已選擇的課程集合
-   * @returns {{totalCredits: number, totalHours: number}} 總學分與總時數
-   */
-  calculateTotalCreditsAndHours = (
-    selectedCourses: Set<Course>,
-  ): { totalCredits: number; totalHours: number } => {
-    let totalCredits = 0;
-    let totalHours = 0;
-
-    selectedCourses.forEach((course) => {
-      totalCredits += parseFloat(course['Credit'] ?? '0.0');
-      COURSE_DAY_NAMES.forEach((day) => {
-        totalHours += course[day]?.length ?? 0;
-      });
-    });
-
-    return { totalCredits, totalHours };
-  };
-
-  /**
    * 檢測時間衝突
    * @param course {Object} 要檢測的課程
    * @param selectedCourses {Set} 已選擇的課程集合
@@ -163,7 +142,6 @@ class SelectorSetting extends Component<
           onCourseHover={onCourseHover}
           filterOptions={filterOptions}
           detectTimeConflict={this.detectTimeConflict}
-          calculateTotalCreditsAndHours={this.calculateTotalCreditsAndHours}
           clickedCourseId={clickedCourseId}
         />
       ),
@@ -177,7 +155,6 @@ class SelectorSetting extends Component<
           onCourseHover={onCourseHover}
           filterOptions={filterOptions}
           detectTimeConflict={this.detectTimeConflict}
-          calculateTotalCreditsAndHours={this.calculateTotalCreditsAndHours}
           clickedCourseId={clickedCourseId}
         />
       ),
@@ -191,7 +168,6 @@ class SelectorSetting extends Component<
           onCourseHover={onCourseHover}
           searchTimeSlot={searchTimeSlot}
           detectTimeConflict={this.detectTimeConflict}
-          calculateTotalCreditsAndHours={this.calculateTotalCreditsAndHours}
           clickedCourseId={clickedCourseId}
         />
       ),
@@ -203,7 +179,6 @@ class SelectorSetting extends Component<
           onCourseSelect={onCourseSelect}
           onCourseHover={onCourseHover}
           selectedCourses={selectedCourses}
-          calculateTotalCreditsAndHours={this.calculateTotalCreditsAndHours}
         />
       ),
       公告: (

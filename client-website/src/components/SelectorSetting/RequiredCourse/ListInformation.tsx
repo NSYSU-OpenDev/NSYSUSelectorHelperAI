@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import type { Course } from '@/types';
 import { DEFAULT_FILTER_OPTIONS, WEBSITE_COLOR } from '@/config';
+import { calculateTotalCreditsAndHours } from '@/utils';
 
 const StyledSelect = styled(Form.Select)`
   margin-right: 10px;
@@ -33,10 +34,6 @@ const ButtonsRow = styled.div`
 
 interface ListInformationProps {
   selectedCourses: Set<Course>;
-  calculateTotalCreditsAndHours: (courses: Set<Course>) => {
-    totalCredits: number;
-    totalHours: number;
-  };
   filterOptions: typeof DEFAULT_FILTER_OPTIONS;
   requiredCourseFilters: {
     [key in Partial<keyof Course>]?: string;
@@ -80,12 +77,8 @@ class ListInformation extends Component<ListInformationProps> {
   };
 
   render() {
-    const {
-      selectedCourses,
-      calculateTotalCreditsAndHours,
-      filterOptions,
-      requiredCourseFilters,
-    } = this.props;
+    const { selectedCourses, filterOptions, requiredCourseFilters } =
+      this.props;
     const { totalCredits, totalHours } =
       calculateTotalCreditsAndHours(selectedCourses);
 

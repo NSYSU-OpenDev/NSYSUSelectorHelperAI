@@ -24,10 +24,6 @@ interface RequiredCourseProps {
   onCourseSelect: (course: Course, isSelected: boolean) => void;
   onCourseHover: (courseId: string | null) => void;
   detectTimeConflict: (course: Course, selectedCourses: Set<Course>) => boolean;
-  calculateTotalCreditsAndHours: (courses: Set<Course>) => {
-    totalCredits: number;
-    totalHours: number;
-  };
   filterOptions: typeof DEFAULT_FILTER_OPTIONS;
   clickedCourseId: string | null;
 }
@@ -117,7 +113,6 @@ class RequiredCourse extends Component<
       onCourseSelect,
       onCourseHover,
       detectTimeConflict,
-      calculateTotalCreditsAndHours,
       filterOptions,
       clickedCourseId,
     } = this.props;
@@ -141,7 +136,6 @@ class RequiredCourse extends Component<
           onRequiredCourseFilterChange={this.handleRequiredCourseFilterChange}
           selectedCourses={selectedCourses}
           requiredCourseFilters={requiredCourseFilters}
-          calculateTotalCreditsAndHours={calculateTotalCreditsAndHours}
         />
         <StyledCardBody>
           <CoursesList

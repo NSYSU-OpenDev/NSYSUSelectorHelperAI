@@ -20,6 +20,7 @@ import styled from 'styled-components';
 
 import type { Course } from '@/types';
 import { COURSE_DETECTIVE_ELEMENTS, WEBSITE_COLOR } from '@/config';
+import { calculateTotalCreditsAndHours } from '@/utils';
 import { SortableItem } from './ListInformation/SortableItem';
 
 const StyledButton = styled(Button)`
@@ -49,10 +50,6 @@ const StyledTextRow = styled.div`
 interface ListInformationProps {
   elements: { id: string; content: string; enabled: boolean }[];
   setElements: (newOrderElements: typeof COURSE_DETECTIVE_ELEMENTS) => void;
-  calculateTotalCreditsAndHours: (selectedCourses: Set<Course>) => {
-    totalCredits: number;
-    totalHours: number;
-  };
   selectedCourses: Set<Course>;
   toggleElementEnable: (id: string) => void;
 }
@@ -60,7 +57,6 @@ interface ListInformationProps {
 const ListInformation: React.FC<ListInformationProps> = ({
   elements,
   setElements,
-  calculateTotalCreditsAndHours,
   selectedCourses,
   toggleElementEnable,
 }) => {

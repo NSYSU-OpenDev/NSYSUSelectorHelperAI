@@ -22,10 +22,6 @@ const StyledCardBody = styled(Card.Body)`
 interface SelectedCourseProps {
   courses: Course[];
   selectedCourses: Set<Course>;
-  calculateTotalCreditsAndHours: (selectedCourses: Set<Course>) => {
-    totalCredits: number;
-    totalHours: number;
-  };
   onCourseSelect: (course: Course, isSelected: boolean) => void;
   isCollapsed: boolean;
   hoveredCourseId: string | null;
@@ -288,13 +284,8 @@ try {
   };
 
   render() {
-    const {
-      selectedCourses,
-      calculateTotalCreditsAndHours,
-      isCollapsed,
-      hoveredCourseId,
-      onCourseHover,
-    } = this.props;
+    const { selectedCourses, isCollapsed, hoveredCourseId, onCourseHover } =
+      this.props;
     const {
       addedSelectedCourses,
       courseWeight,
@@ -319,7 +310,6 @@ try {
         <ListInformation
           selectedCourses={selectedCourses}
           addedSelectedCourses={addedSelectedCourses}
-          calculateTotalCreditsAndHours={calculateTotalCreditsAndHours}
           onCourseSelect={this.handleCourseAddedSelect}
           onExportCourses={this.handleExportAddedSelectedCourses}
           onImportCourses={this.openImportModal}

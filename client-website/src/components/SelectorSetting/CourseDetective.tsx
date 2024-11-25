@@ -21,10 +21,6 @@ interface CourseDetectiveProps {
   selectedCourses: Set<Course>;
   isCollapsed: boolean;
   detectTimeConflict: (course: Course, selectedCourses: Set<Course>) => boolean;
-  calculateTotalCreditsAndHours: (selectedCourses: Set<Course>) => {
-    totalCredits: number;
-    totalHours: number;
-  };
   searchTimeSlot: TimeSlot[];
   hoveredCourseId: string | null;
   onCourseSelect: (course: Course, isSelected: boolean) => void;
@@ -219,7 +215,6 @@ class CourseDetective extends Component<
       isCollapsed,
       // displayConflictCourses,
       detectTimeConflict,
-      calculateTotalCreditsAndHours,
       hoveredCourseId,
       onCourseSelect,
       onCourseHover,
@@ -245,7 +240,6 @@ class CourseDetective extends Component<
             elements={orderElements}
             setElements={this.setOrderElements}
             selectedCourses={selectedCourses}
-            calculateTotalCreditsAndHours={calculateTotalCreditsAndHours}
             toggleElementEnable={this.toggleOrderElementEnable}
           />
           <StyledCardBody>

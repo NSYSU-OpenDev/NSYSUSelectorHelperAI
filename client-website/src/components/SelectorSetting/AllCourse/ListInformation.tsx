@@ -11,6 +11,7 @@ import styled from 'styled-components';
 
 import type { AdvancedFilterType, Course } from '@/types';
 import { DEFAULT_FILTER_OPTIONS, WEBSITE_COLOR } from '@/config';
+import { calculateTotalCreditsAndHours } from '@/utils';
 import ClearSelectedCourses from './ListInformation/ClearSelectedCourses';
 
 const ButtonsRow = styled.div`
@@ -49,10 +50,6 @@ interface ListInformationProps {
   displayConflictCourses: boolean;
   toggleDisplayConflictCourses: () => void;
   toggleOnlySelected: () => void;
-  calculateTotalCreditsAndHours: (courses: Set<Course>) => {
-    totalCredits: number;
-    totalHours: number;
-  };
   filterOptions: typeof DEFAULT_FILTER_OPTIONS;
 }
 
@@ -89,7 +86,6 @@ class ListInformation extends Component<ListInformationProps> {
       onClearAllSelectedCourses,
       displaySelectedOnly,
       displayConflictCourses,
-      calculateTotalCreditsAndHours,
       filterOptions,
     } = this.props;
     const { totalCredits, totalHours } =

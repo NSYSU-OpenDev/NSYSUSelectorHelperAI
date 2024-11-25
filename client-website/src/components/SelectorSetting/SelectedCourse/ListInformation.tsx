@@ -9,6 +9,7 @@ import {
 
 import type { Course } from '@/types';
 import { WEBSITE_COLOR } from '@/config';
+import { calculateTotalCreditsAndHours } from '@/utils';
 
 const StyledButton = styled(Button)`
   background-color: ${WEBSITE_COLOR.mainColor};
@@ -31,10 +32,6 @@ const ButtonsRow = styled.div`
 interface ListInformationProps {
   selectedCourses: Set<Course>;
   addedSelectedCourses: Set<string>;
-  calculateTotalCreditsAndHours: (selectedCourses: Set<Course>) => {
-    totalCredits: number;
-    totalHours: number;
-  };
   onCourseSelect: (course: Course, isSelected: boolean) => void;
   onImportCourses: () => void;
   onExportCourses: () => void;
@@ -64,7 +61,6 @@ class ListInformation extends Component<ListInformationProps> {
     const {
       selectedCourses,
       addedSelectedCourses,
-      calculateTotalCreditsAndHours,
       onImportCourses,
       onExportCourses,
       onShowHowToUseModal,

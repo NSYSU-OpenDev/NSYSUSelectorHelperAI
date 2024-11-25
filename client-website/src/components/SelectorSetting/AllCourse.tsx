@@ -37,10 +37,6 @@ interface AllCourseProps {
   filterOptions: typeof DEFAULT_FILTER_OPTIONS;
   isCollapsed: boolean;
   detectTimeConflict: (course: Course, selectedCourses: Set<Course>) => boolean;
-  calculateTotalCreditsAndHours: (courses: Set<Course>) => {
-    totalCredits: number;
-    totalHours: number;
-  };
   clickedCourseId: string | null;
 }
 
@@ -359,7 +355,6 @@ class AllCourse extends Component<AllCourseProps, AllCourseState> {
       hoveredCourseId,
       isCollapsed,
       detectTimeConflict,
-      calculateTotalCreditsAndHours,
       clickedCourseId,
     } = this.props;
     const {
@@ -392,7 +387,6 @@ class AllCourse extends Component<AllCourseProps, AllCourseState> {
           toggleOnlySelected={this.toggleOnlySelected}
           displayConflictCourses={displayConflictCourses}
           toggleDisplayConflictCourses={this.toggleDisplayConflictCourses}
-          calculateTotalCreditsAndHours={calculateTotalCreditsAndHours}
           filterOptions={filterOptions}
         />
         <StyledCardBody>
