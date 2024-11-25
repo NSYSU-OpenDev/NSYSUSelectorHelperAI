@@ -13,7 +13,7 @@ class ChatApiConnector {
   ): Promise<ChatResponse> {
     try {
       const response = await axios.post<ChatResponse>(
-        this.baseURL,
+        `${this.baseURL}/chat`,
         chatRequest,
       );
       return response.data;
