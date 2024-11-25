@@ -1,50 +1,71 @@
-# React + TypeScript + Vite
+# 前端應用啟動指南
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+這份文檔旨在為後端開發者提供如何啟動和運行前端網頁應用的指導。
 
-Currently, two official plugins are available:
+## 環境要求
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+在運行此應用程式之前，請確保你的開發環境已經安裝了以下軟體：
 
-## Expanding the ESLint configuration
+### 安裝 Node.js
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. 前往 [Node.js 官網](https://nodejs.org/)。
+2. 下載並安裝 LTS 版本的 Node.js。
+3. 安裝後，使用命令 `node -v` 確認Node.js安裝成功。此命令會顯示版本號。
 
-- Configure the top-level `parserOptions` property like this:
+### 安裝 Yarn
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+Yarn 是一個安全且快速的 JavaScript 套件管理器。
+1. 在安裝完 Node.js 之後，可以使用 npm（Node.js 包管理器）來安裝 Yarn：
+   ```bash
+   npm install --global yarn
+   ```
+2. 安裝後，使用命令 `yarn -v` 確認Yarn安裝成功。此命令會顯示版本號。
+
+## 安裝依賴
+
+在終端機中進入 `client-website` 目錄，然後輸入以下命令來安裝所需的套件：
+
+```bash
+yarn install
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+這會根據 `package.json` 自動安裝所有必需的依賴。
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## 啟動前端應用
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+安裝完成後，使用以下命令啟動前端應用程式：
+
+```bash
+yarn start
 ```
+
+> [!NOTE]
+> 執行此命令後，前端應用將啟動並開啟在瀏覽器。預設地址通常是 `http://localhost:3000`；確保在啟動之前切換到正確的目錄。
+
+## 確保運行中的 APIs
+
+在使用前端應用之前，請確保後端 Flask 伺服器應用正在運行。
+- 端點地址為 `http://127.0.0.1:5000/chat`。
+
+## 開發注意事項
+
+在開發過程中，如果遇到問題，請檢查以下幾項以確保運行正常：
+- 查看終端機輸出的錯誤資訊，檢查是否有依賴問題。
+- 確保 API 伺服器正在運行且能正常響應請求。
+- 確保防火牆或網路設置不影響訪問服務。
+
+## 整合前端
+
+確保你的前端應用程式指向此 Flask 端點以進行聊天互動。記得根據實際情況修改 API 路徑。
+修改位於 `config.tsx` 的 `ASSISTANT_API_URL` 變數，將其設置為後端應用程式的 URL。
+
+> [!NOTE] 
+> 請不用加上`/chat`路徑，只需填寫主機名稱即可。前端會自動加上`/chat`路徑。
+
+```typescript
+export const ASSISTANT_API_URL = 'http://THE_BACKEND_URL';
+```
+
+## 結語
+
+這份文檔提供了前端應用啟動的基本步驟。若有進一步的疑問，請不要猶豫，與團隊其他成員聯繫以獲取協助。
