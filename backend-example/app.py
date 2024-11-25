@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 app = Flask(__name__)
 # Enable CORS (Which allows the frontend to send requests to this server)
-CORS(app, resources={r"/chat": {"origins": "http://localhost:5173"}})
+CORS(app)
 
 @app.route('/chat', methods=['POST'])
 def chat() -> Response:
