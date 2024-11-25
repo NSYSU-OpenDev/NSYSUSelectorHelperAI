@@ -1,21 +1,25 @@
 from typing import List, Dict, Any
 from typing import TYPE_CHECKING
 
-
+from flask_cors import CORS
 from flask import Flask, request, jsonify, Response
 
 # Only import for type checking
 if TYPE_CHECKING:
-    from types import Message, ChatRequest
+    from types import Message
 
 app = Flask(__name__)
+# Enable CORS (Which allows the frontend to send requests to this server)
+CORS(app, resources={r"/chat": {"origins": "http://localhost:5173"}})
 
 @app.route('/chat', methods=['POST'])
 def chat() -> Response:
-    data: 'ChatRequest' = request.json
-    messages: List['Message'] = data.messages if data.messages else []
-    semesters: str = data.semesters if data.semesters else ""
-    current_selected_course_ids: List[str] = data.currentSelectedCourseId if data.currentSelectedCourseId else []
+    data: 'any' = request.json
+    messages: List['Message'] = data.get('messages', [])
+    semesters: str = data.get('semesters', '')
+    current_selected_course_ids: List[str] = data.get('currentSelectedCourseId', [])
+
+    # Forwards the request to the logic module...
 
     # Example response logic
     response_message: str = "這是一個來自伺服器的模擬回應。"
