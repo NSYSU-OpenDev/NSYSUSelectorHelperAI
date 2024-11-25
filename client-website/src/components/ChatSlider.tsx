@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Form, InputGroup } from 'react-bootstrap';
+import { Form, InputGroup, Spinner } from 'react-bootstrap';
+import { Send } from 'react-bootstrap-icons';
 import styled, { css } from 'styled-components';
 import Markdown from 'react-markdown';
 
@@ -58,12 +59,14 @@ export const ChatSlider: React.FC<ChatSliderProps> = ({
       content: '您好！我是您的智慧選課助手，我能幫您快速找到適合您的課程。',
     },
   ]);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleSend = async () => {
-    if (!newMessage.trim()) {
+    if (!newMessage.trim() || isProcessing) {
       return;
     }
 
+    setIsProcessing(true);
     const userMessage: Message = { role: 'user', content: newMessage };
     if (messages[messages.length - 1].role === 'assistant') {
       setMessages((prevMessages) => [...prevMessages, userMessage]);
@@ -115,6 +118,8 @@ export const ChatSlider: React.FC<ChatSliderProps> = ({
       }
     } catch (error) {
       console.error('Error while communicating with chat API:', error);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -127,6 +132,18 @@ export const ChatSlider: React.FC<ChatSliderProps> = ({
             <Markdown>{msg.content}</Markdown>
           </ChatBubble>
         ))}
+        {isProcessing &&
+          messages.length > 0 &&
+          messages[messages.length - 1].role === 'user' && (
+            <ChatBubble key={messages.length} role='assistant'>
+              <strong>AI選課助手:</strong>{' '}
+              <span>
+                正在處理中 <Spinner animation='grow' size={'sm'} />
+                <Spinner animation='grow' size={'sm'} />
+                <Spinner animation='grow' size={'sm'} />
+              </span>
+            </ChatBubble>
+          )}
       </ChatContainer>
 
       <InputGroup>
@@ -136,7 +153,9 @@ export const ChatSlider: React.FC<ChatSliderProps> = ({
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder='說些你喜歡的事務，或是你想學習的技能吧！'
         />
-        <StyledButton onClick={handleSend}>Send</StyledButton>
+        <StyledButton onClick={handleSend}>
+          <Send />
+        </StyledButton>
       </InputGroup>
     </div>
   );
