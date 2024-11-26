@@ -554,6 +554,7 @@ class App extends Component<{}, AppState> {
                       selectedSemester={semester}
                       courses={courses}
                       updateNewOrderedCourses={this.updateNewOrderedCourses}
+                      selectedCourses={selectedCourses}
                     />
                   )}
                 </Card.Body>

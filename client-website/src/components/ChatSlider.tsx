@@ -52,6 +52,7 @@ interface ChatSliderProps {
   selectedSemester: string;
   courses: Course[];
   updateNewOrderedCourses: (newOrderedCourses: Course[]) => void;
+  selectedCourses: Set<Course>;
 }
 
 // Prefix for localStorage to avoid conflicts on GitHub Pages
@@ -61,6 +62,7 @@ export const ChatSlider: React.FC<ChatSliderProps> = ({
   selectedSemester,
   courses,
   updateNewOrderedCourses,
+  selectedCourses,
 }) => {
   const [newMessage, setNewMessage] = useState('');
   const [messages, setMessages] = useState<Message[]>(() => {
@@ -123,7 +125,9 @@ export const ChatSlider: React.FC<ChatSliderProps> = ({
 
     const chatRequest: ChatRequest = {
       messages: [...messages, userMessage],
-      currentSelectedCourseId: [],
+      currentSelectedCourseId: Array.from(selectedCourses).map(
+        (course) => course.Number,
+      ),
       semesters: selectedSemester,
     };
 
