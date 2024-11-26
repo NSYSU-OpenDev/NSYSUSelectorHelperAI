@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
-import { Form, InputGroup, Spinner } from 'react-bootstrap';
-import { Send } from 'react-bootstrap-icons';
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+  Form,
+  InputGroup,
+  Spinner,
+  Toast,
+  ToastContainer,
+  Button,
+} from 'react-bootstrap';
+import { Send, Trash } from 'react-bootstrap-icons';
 import styled, { css } from 'styled-components';
 import Markdown from 'react-markdown';
 
@@ -47,19 +54,55 @@ interface ChatSliderProps {
   updateNewOrderedCourses: (newOrderedCourses: Course[]) => void;
 }
 
+// Prefix for localStorage to avoid conflicts on GitHub Pages
+const LOCAL_STORAGE_PREFIX = 'course_selector_chat_';
+
 export const ChatSlider: React.FC<ChatSliderProps> = ({
   selectedSemester,
   courses,
   updateNewOrderedCourses,
 }) => {
   const [newMessage, setNewMessage] = useState('');
-  const [messages, setMessages] = useState<Message[]>([
-    {
+  const [messages, setMessages] = useState<Message[]>(() => {
+    // Load messages from localStorage on initial render
+    const storedMessages = localStorage.getItem(
+      `${LOCAL_STORAGE_PREFIX}history`,
+    );
+    return storedMessages
+      ? JSON.parse(storedMessages)
+      : [
+          {
+            role: 'assistant',
+            content:
+              '您好！我是您的智慧選課助手，我能幫您快速找到適合您的課程。',
+          },
+        ];
+  });
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [showErrorNotification, setShowErrorNotification] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  // Save messages to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem(
+      `${LOCAL_STORAGE_PREFIX}history`,
+      JSON.stringify(messages),
+    );
+  }, [messages]);
+
+  // Clear conversation history
+  const handleClearHistory = useCallback(() => {
+    // Reset to an initial assistant welcome message
+    const initialMessage: Message = {
       role: 'assistant',
       content: '您好！我是您的智慧選課助手，我能幫您快速找到適合您的課程。',
-    },
-  ]);
-  const [isProcessing, setIsProcessing] = useState(false);
+    };
+
+    setMessages([initialMessage]);
+
+    // Clear from localStorage
+    localStorage.removeItem(`${LOCAL_STORAGE_PREFIX}history`);
+  }, []);
 
   const handleSend = async () => {
     if (!newMessage.trim() || isProcessing) {
@@ -118,45 +161,79 @@ export const ChatSlider: React.FC<ChatSliderProps> = ({
       }
     } catch (error) {
       console.error('Error while communicating with chat API:', error);
+
+      // Set error notification details
+      setErrorMessage('AI助手目前為離線狀態，請稍後再試。');
+      setShowErrorNotification(true);
     } finally {
       setIsProcessing(false);
     }
   };
 
   return (
-    <div className='chat-slider bg-secondary-subtle p-4 rounded-lg shadow-lg'>
-      <ChatContainer>
-        {messages.map((msg, index) => (
-          <ChatBubble key={index} role={msg.role}>
-            <strong>{msg.role === 'user' ? '您:' : 'AI選課助手:'}</strong>{' '}
-            <Markdown>{msg.content}</Markdown>
-          </ChatBubble>
-        ))}
-        {isProcessing &&
-          messages.length > 0 &&
-          messages[messages.length - 1].role === 'user' && (
-            <ChatBubble key={messages.length} role='assistant'>
-              <strong>AI選課助手:</strong>{' '}
-              <span>
-                正在處理中 <Spinner animation='grow' size={'sm'} />
-                <Spinner animation='grow' size={'sm'} />
-                <Spinner animation='grow' size={'sm'} />
-              </span>
+    <>
+      <div className='chat-slider bg-secondary-subtle p-4 rounded-lg shadow-lg'>
+        <ChatContainer>
+          {messages.map((msg, index) => (
+            <ChatBubble key={index} role={msg.role}>
+              <strong>{msg.role === 'user' ? '您:' : 'AI選課助手:'}</strong>{' '}
+              <Markdown>{msg.content}</Markdown>
             </ChatBubble>
-          )}
-      </ChatContainer>
+          ))}
+          {isProcessing &&
+            messages.length > 0 &&
+            messages[messages.length - 1].role === 'user' && (
+              <ChatBubble key={messages.length} role='assistant'>
+                <strong>AI選課助手:</strong>{' '}
+                <span>
+                  正在處理中 <Spinner animation='grow' size={'sm'} />
+                  <Spinner animation='grow' size={'sm'} />
+                  <Spinner animation='grow' size={'sm'} />
+                </span>
+              </ChatBubble>
+            )}
+        </ChatContainer>
 
-      <InputGroup>
-        <Form.Control
-          type='text'
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          placeholder='說些你喜歡的事務，或是你想學習的技能吧！'
-        />
-        <StyledButton onClick={handleSend}>
-          <Send />
-        </StyledButton>
-      </InputGroup>
-    </div>
+        <InputGroup>
+          <Form.Control
+            type='text'
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder='說些你喜歡的事務，或是你想學習的技能吧！'
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                void handleSend();
+              }
+            }}
+          />
+          <StyledButton onClick={handleSend}>
+            <Send />
+          </StyledButton>
+          <Button
+            variant='outline-danger'
+            onClick={handleClearHistory}
+            title='清除對話歷史'
+          >
+            <Trash />
+          </Button>
+        </InputGroup>
+      </div>
+
+      {/* Error Notification */}
+      <ToastContainer position='top-end' className='p-3'>
+        <Toast
+          onClose={() => setShowErrorNotification(false)}
+          show={showErrorNotification}
+          delay={5000}
+          autohide
+          bg='danger'
+        >
+          <Toast.Header>
+            <strong className='me-auto'>系統通知</strong>
+          </Toast.Header>
+          <Toast.Body className='text-white'>{errorMessage}</Toast.Body>
+        </Toast>
+      </ToastContainer>
+    </>
   );
 };
