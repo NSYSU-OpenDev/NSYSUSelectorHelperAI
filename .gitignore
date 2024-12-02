@@ -26,7 +26,6 @@ dist-ssr
 .vite-react-ssg-temp/
 cache-images
 
-/backend-example/.vscode/
-/backend-example/venv/
-/backend-example/__pycache__
-backend-example/.env
+/backend/.vscode/
+/backend/venv/
+/backend/__pycache__
