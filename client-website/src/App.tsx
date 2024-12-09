@@ -435,6 +435,14 @@ class App extends Component<{}, AppState> {
    */
   updateNewOrderedCourses = (newOrderedCourses: Course[]) => {
     this.setState({ courses: newOrderedCourses });
+
+    // Update the selected courses with the new order
+    const selectedCourses = new Set(
+      newOrderedCourses.filter((course) =>
+        this.state.selectedCourses.has(course),
+      ),
+    );
+    this.setState({ selectedCourses });
   };
 
   /**

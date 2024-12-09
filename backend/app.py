@@ -26,8 +26,8 @@ def chat() -> Response:
     # Forwards the request to the logic module...
 
     # Example response logic
-    response_message: str = "這是一個來自伺服器的模擬回應。"
-    ranked_course_ids: List[str] = ["course123", "course456"]  # 示例課程 ID
+    response_message: str = "根據你的喜好與查詢，我推薦你一些有關AI的課程，希望對你有幫助！包誇: 機器學習、人工智慧導論、資料探勘與應用、自然語言處理" # 示例回應訊息
+    ranked_course_ids: List[str] = ["AI50001", "AI10001", "AI50003", "AI50004"]  # 示例課程 ID
     response: ChatResponse = ChatResponse(response=response_message, ranked_course_ids=ranked_course_ids)
 
     return jsonify(response.to_dict())
