@@ -34,8 +34,15 @@ def read_system_prompt(file_path: str = './prompt.txt') -> str:
         2. Output the query in a structured format
         """
 
-
-def generate_potential_query(messages: List[Message], model: str = "llama-3.1-8b-instant") -> Dict[str, str]:
+"""
+Available models:
+- gemma2-9b-it
+- llama-3.1-8b-instant
+- llama-3.1-70b-versatile
+- llama-3.2-3b-preview
+- llama-3.3-70b-versatile
+"""
+def generate_potential_query(messages: List[Message], model: str = "llama-3.3-70b-versatile") -> Dict[str, str]:
     """
     Convert dialog to potential query using Groq
     """
