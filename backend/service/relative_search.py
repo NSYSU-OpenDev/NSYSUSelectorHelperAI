@@ -14,7 +14,7 @@ class CourseReranker:
         self.reranker_model = CrossEncoder('BAAI/bge-reranker-base', device=self.device)
         print(f"Using device: {self.device}")
 
-    def score_courses(self, search_query: Dict[str, str], courses_df: pd.DataFrame, batch_size: int = 32) -> pd.DataFrame:
+    def score_courses(self, search_query: Dict[str, str], courses_df: pd.DataFrame, batch_size: int = 256) -> pd.DataFrame:
         """
         Score courses based on the search query.
 
@@ -27,10 +27,15 @@ class CourseReranker:
             pd.DataFrame: The courses dataframe with relevance scores.
         """
         combined_query = " ".join(search_query.values())
-        pairs = [
-            (combined_query, f"{row['name']} {row['teacher']} {row['description']} {row['department']} {row['objectives']} {row['syllabus']}")
-            for _, row in courses_df.iterrows()
-        ]
+        courses_df['combined_text'] = (
+            courses_df['name'].fillna('') + " " +
+            courses_df['teacher'].fillna('') + " " +
+            courses_df['description'].fillna('') + " " +
+            courses_df['department'].fillna('') + " " +
+            courses_df['objectives'].fillna('') + " " +
+            courses_df['syllabus'].fillna('')
+        )
+        pairs = [(combined_query, text) for text in courses_df['combined_text'].tolist()]
         # Batch scoring
         relevance_scores = []
         for i in tqdm(range(0, len(pairs), batch_size)):
