@@ -22,7 +22,7 @@ def extract_course_details(course_url: str) -> dict:
     response.encoding = 'utf-8'  # Ensure correct encoding
 
     if response.status_code != 200:
-        raise Exception(f"Failed to fetch the page. Status code: {response.status_code}")
+        return {"syllabus": "", "objectives": ""}
 
     soup = BeautifulSoup(response.text, 'html.parser')
 
@@ -31,14 +31,14 @@ def extract_course_details(course_url: str) -> dict:
     if syllabus_tag:
         syllabus = syllabus_tag.find_next('td', colspan="12").get_text(strip=True)
     else:
-        syllabus = "Not found"
+        syllabus = ""
 
     # Find Course Objectives
     objectives_tag = soup.find('p', string='課程目標 Objectives')
     if objectives_tag:
         objectives = objectives_tag.find_next('td', colspan="12").get_text(strip=True)
     else:
-        objectives = "Not found"
+        objectives = ""
 
     return {"syllabus": syllabus, "objectives": objectives}
 

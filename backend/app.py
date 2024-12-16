@@ -3,7 +3,7 @@ from typing import List
 from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 
-from chat_types import ChatRequest, Message, ChatResponse
+from backend.types.chat_types import ChatRequest, Message, ChatResponse
 
 app = Flask(__name__)
 # Enable CORS (Which allows the frontend to send requests to this server)

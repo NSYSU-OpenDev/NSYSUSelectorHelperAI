@@ -5,7 +5,7 @@ from typing import List, Dict
 from dotenv import load_dotenv
 from groq import Groq
 
-from chat_types import Message
+from backend.types.chat_types import Message
 
 # Load environment variables
 load_dotenv()
