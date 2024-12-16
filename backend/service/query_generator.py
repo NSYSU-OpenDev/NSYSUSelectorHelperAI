@@ -99,10 +99,6 @@ def generate_potential_query(messages: List[Message], model: str = "llama-3.3-70
                                     "type": "number",
                                     "description": "Targeted grade or year of students for the course."
                                 },
-                                "deliveryMode": {
-                                    "type": "string",
-                                    "description": "Format of course delivery. Options: [online, offline, hybrid]."
-                                }
                             },
                             "required": []
                         }

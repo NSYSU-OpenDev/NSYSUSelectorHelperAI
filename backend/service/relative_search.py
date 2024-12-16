@@ -59,4 +59,4 @@ if __name__ == "__main__":
 
     scored_courses = reranker.score_courses(test_query, test_courses_df)
 
-    print(scored_courses.head())
+    print(scored_courses[['name', 'teacher', 'department', 'description', 'relevance_score']].head())

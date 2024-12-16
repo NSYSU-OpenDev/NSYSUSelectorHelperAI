@@ -131,8 +131,6 @@ def connect_to_groq(api_key: str, prompt: str) -> Dict[str, Any]:
     # Initialize Groq client
     client = Groq(api_key=api_key)
 
-    print(f"Prompt: {prompt}")
-
     try:
         response = client.chat.completions.create(
             model="llama-3.3-70b-versatile",

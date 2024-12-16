@@ -6,7 +6,7 @@ import pandas as pd
 
 from backend.service.query_generator import generate_potential_query
 from backend.service.relative_search import CourseReranker
-from backend.service.relative_search_bi_encoder import CourseRerankerBiEncoder
+from backend.service.relative_search_bi_encoder import CourseRerankerWithFieldMapping
 from backend.types.chat_types import ChatRequest, Message, ChatResponse
 from backend.service.final_response_generator import generate_final_response
 
@@ -22,7 +22,7 @@ if USE_CROSS_ENCODER:
     ranker = CourseReranker()
 else:
     # Initialize and use the reranker with precomputed embeddings
-    ranker = CourseRerankerBiEncoder(embeddings_file='./data/precomputed_course_embeddings.pt')
+    ranker = CourseRerankerWithFieldMapping(embeddings_file='./data/precomputed_field_embeddings.pt')
 
 @app.route('/chat', methods=['POST'])
 def chat() -> Response:
