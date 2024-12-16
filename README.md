@@ -6,18 +6,14 @@ https://CelleryLin.github.io/selector_helper/
 https://forms.gle/gFBZDgkSbj85zukP6
 
 ## 使用須知：
-此網站式依據電腦的使用者體驗設計，建議使用電腦瀏覽， 近期有在進行手機版的大幅度改善，歡迎提出意見。
-這是輔助大家選課的系統，僅供參考。
-課程資料是爬蟲下來的靜態資料，若有校方有異動，本人尚未更新的話請聯絡，感謝。
+這是實驗版，利用 Transformer 與 LLM 實現 Retrival-Augmented Generation。
+
+> [NOTE]
+> 由於需要顯存，因此需要 Host Backend 以及使用 GPU 進行推論。
 
 ## 更新內容：
-* 自動選課改稱課程偵探，並且改成排序列表
-* 新版前端完成了！手機版也有了！
-* 新增課程偵探時間點擊篩選功能
-* 一鍵登記與已選課程合併了
-* 新增匯入與匯出功能
-* 優化課程動態渲染
-* 可以收起課表了
+* 人工智慧對話排課系統 (Beta)
+* 檢索重新排序 (Beta)
 
 ## 主要功能：
 * 課表動態更新
@@ -29,10 +25,39 @@ https://forms.gle/gFBZDgkSbj85zukP6
 * 一鍵登記選課 (其實沒有一鍵啦)
 * Local Storage 關閉瀏覽器自動儲存選課資料
 
+## 本地端運行：
+
+### 後端
+
+#### 建立 venv 環境
+```bash
+cd backend
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+#### 啟動後端 (<root>/)
+```bash
+cd .. # 回到根目錄 (若你在 backend 資料夾)
+python backend/app.py
+```
+
+### 前端
+
+#### 安裝套件
+```bash
+cd frontend
+yarn
+```
+
+#### 啟動前端 (<root>/frontend/)
+```bash
+yarn dev
+```
+
 ## 已知問題：
 * Safari 瀏覽器有可能會出現渲染問題，有任何選染錯誤請聯絡我，並註記您的瀏覽器版本。(如果願意擔當測試者，請在表單說想當 IOS 前端測試，不勝感激)
-* Bundle 初始化載入較慢，目前考慮使用 Vite 進行重構，如果有任何使用上卡頓的問題，請幫忙填寫表單反饋，並註記位置。
-* 課程資料是爬蟲下來的靜態資料，更新依賴於手動，計畫未來會進行自動化更新，但目前尚未進行。有興趣協助的話，請看[中山課程開放API](https://github.com/whats2000/NSYSUCourseAPI)
 
 ## 錯誤回報 & 聯絡：
 * 總負責人：yochen0123@gmail.com
