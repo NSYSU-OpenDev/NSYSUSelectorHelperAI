@@ -2,7 +2,7 @@ import pandas as pd
 import requests
 from typing import List, Dict, Any
 
-from backend.api.clawer import extend_course_dataframe
+from backend.src.api.clawer import extend_course_dataframe
 
 BASE_URL = 'https://whats2000.github.io/NSYSUCourseAPI'
 

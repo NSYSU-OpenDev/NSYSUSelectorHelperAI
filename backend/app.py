@@ -4,14 +4,14 @@ from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 import pandas as pd
 
-from backend.service.query_generator import generate_potential_query
-from backend.service.relative_search import CourseReranker
-from backend.service.relative_search_bi_encoder import CourseRerankerWithFieldMapping
-from backend.types.chat_types import ChatRequest, Message, ChatResponse
-from backend.service.final_response_generator import generate_final_response
+from src.types.chat_types import ChatRequest, Message, ChatResponse
+from src.service.query_generator import generate_potential_query
+from src.service.relative_search import CourseReranker
+from src.service.relative_search_bi_encoder import CourseRerankerWithFieldMapping
+from src.service.final_response_generator import generate_final_response
 
 MAX_RETRY = 3
-USE_CROSS_ENCODER = False
+USE_CROSS_ENCODER = True
 
 app = Flask(__name__)
 # Enable CORS (Which allows the frontend to send requests to this server)
@@ -22,7 +22,7 @@ if USE_CROSS_ENCODER:
     ranker = CourseReranker()
 else:
     # Initialize and use the reranker with precomputed embeddings
-    ranker = CourseRerankerWithFieldMapping(embeddings_file='./data/precomputed_field_embeddings.pt')
+    ranker = CourseRerankerWithFieldMapping(embeddings_file='src/data/precomputed_field_embeddings.pt')
 
 @app.route('/chat', methods=['POST'])
 def chat() -> Response:
@@ -41,7 +41,7 @@ def chat() -> Response:
 
     retry = 0
 
-    courses_df = pd.read_csv('./data/courses.csv')
+    courses_df = pd.read_csv('src/data/courses.csv')
     scored_courses_df = None
     query_for_retrival = None
     ranked_course_ids = courses_df['id'].tolist()
