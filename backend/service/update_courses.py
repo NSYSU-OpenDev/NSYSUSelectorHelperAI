@@ -1,5 +1,3 @@
-import json
-
 from backend.api.courses_api import NSYSUCourseAPI
 
 DATA_STORAGE_PATH = '../data/courses.csv'
