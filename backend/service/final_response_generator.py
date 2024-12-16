@@ -58,7 +58,8 @@ def format_prompt(data: pd.DataFrame, query_dict: Dict[str, str], max_columns: i
     # Determine key columns dynamically
     key_columns = [
         'name', 'id', 'department', 'grade', 'credit',
-        'teacher', 'compulsory', 'remaining', 'description'
+        'teacher', 'compulsory', 'remaining', 'description',
+        'syllabus', 'objectives'
     ]
 
     # Ensure these columns exist, use those that do
