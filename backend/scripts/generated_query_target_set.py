@@ -101,7 +101,7 @@ class QueryTargetWithTagsGenerator:
 
         return queries
 
-    def create_dataset(self, output_file: str, num_queries_per_tag: int = 3):
+    def create_dataset(self, output_file: str, num_queries_per_tag: int = 8):
         """
         Generate an evaluation dataset where each query maps to a list of positive course IDs only.
         """
@@ -116,7 +116,8 @@ class QueryTargetWithTagsGenerator:
             for query in queries:
                 dataset.append({
                     "query": query,
-                    "relative_courses_id": list(course_ids)
+                    "relative_courses_id": list(course_ids),
+                    "tags": tag,
                 })
 
         # Convert to DataFrame and save
