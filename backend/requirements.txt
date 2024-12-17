@@ -1,13 +1,11 @@
+aiohttp==3.11.10
 beautifulsoup4==4.12.3
 Flask==2.2.5
-Flask_Cors==4.0.0
 Flask_Cors==5.0.0
 groq==0.13.1
 pandas==2.2.3
 python-dotenv==1.0.1
 Requests==2.32.3
-sentence_transformers==2.2.2
 sentence_transformers==3.3.1
 torch==2.5.1+cu118
-tqdm==4.66.2
 tqdm==4.67.1

@@ -1,3 +1,5 @@
+import asyncio
+
 import pandas as pd
 import requests
 from typing import List, Dict, Any
@@ -71,7 +73,7 @@ class NSYSUCourseAPI:
         return unique_courses
 
     @staticmethod
-    def get_latest_courses() -> pd.DataFrame:
+    async def get_latest_courses() -> pd.DataFrame:
         """
         Retrieve all courses for the latest semester.
 
@@ -86,17 +88,20 @@ class NSYSUCourseAPI:
 
         courses_df = pd.DataFrame(NSYSUCourseAPI.get_courses(latest_academic_year, latest_update_time))
 
-        return extend_course_dataframe(courses_df, 'url')
+        return await extend_course_dataframe(courses_df, 'url')
 
 
 # Example Usage
 if __name__ == "__main__":
-    try:
-        print("Fetching latest courses...")
-        courses = NSYSUCourseAPI.get_latest_courses()
-        print(f"Number of courses fetched: {len(courses)}")
-        print("Sample course:", courses.head() if not courses.empty else "No courses found")
-        print("Index of the DataFrame:", courses.index)
-        print("Columns of the DataFrame:", courses.columns)
-    except Exception as e:
-        print(e)
+    async def main():
+        try:
+            print("Fetching latest courses...")
+            courses = await NSYSUCourseAPI.get_latest_courses()
+            print(f"Number of courses fetched: {len(courses)}")
+            print("Sample course:", courses.head() if not courses.empty else "No courses found")
+            print("Index of the DataFrame:", courses.index)
+            print("Columns of the DataFrame:", courses.columns)
+        except Exception as e:
+            print(e)
+
+    asyncio.run(main())
