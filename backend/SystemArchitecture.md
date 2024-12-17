@@ -52,4 +52,6 @@ The system is composed of the following key components:
 -   **Sentence Transformers**: For sentence embedding and cross-encoder models.
 -   **Pandas**: For data manipulation.
 
-This system architecture provides a clear structure for understanding how the course recommendation system functions and how the RAG pipeline facilitates efficient and relevant responses to user queries.
+## Diagram Figure
+
+![System Diagram](./src/assets/system-diagram.png)
