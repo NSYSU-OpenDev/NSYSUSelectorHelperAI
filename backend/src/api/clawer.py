@@ -7,12 +7,13 @@ from bs4 import BeautifulSoup
 # Enable progress bar for DataFrame operations
 tqdm.pandas()
 
-async def extract_course_details(course_url: str) -> dict:
+async def extract_course_details(course_url: str, progress_bar: tqdm) -> dict:
     """
     Extract course syllabus and objectives from the given URL asynchronously.
 
     Args:
         course_url (str): The URL of the webpage.
+        progress_bar (tqdm): Shared progress bar instance.
 
     Returns:
         dict: A dictionary containing the syllabus and objectives.
@@ -20,7 +21,7 @@ async def extract_course_details(course_url: str) -> dict:
     async with aiohttp.ClientSession() as session:
         try:
             async with session.get(course_url) as response:
-                response.encoding = 'utf-8'  # Ensure correct encoding
+                response.encoding = 'utf-8'
                 if response.status != 200:
                     return {"syllabus": "", "objectives": ""}
                 html = await response.text()
@@ -28,26 +29,23 @@ async def extract_course_details(course_url: str) -> dict:
 
                 # Find Course Syllabus
                 syllabus_tag = soup.find('p', string='課程大綱 Course syllabus')
-                if syllabus_tag:
-                    syllabus = syllabus_tag.find_next('td', colspan="12").get_text(strip=True)
-                else:
-                    syllabus = ""
+                syllabus = syllabus_tag.find_next('td', colspan="12").get_text(strip=True) if syllabus_tag else ""
 
                 # Find Course Objectives
                 objectives_tag = soup.find('p', string='課程目標 Objectives')
-                if objectives_tag:
-                    objectives = objectives_tag.find_next('td', colspan="12").get_text(strip=True)
-                else:
-                    objectives = ""
+                objectives = objectives_tag.find_next('td', colspan="12").get_text(strip=True) if objectives_tag else ""
 
                 return {"syllabus": syllabus, "objectives": objectives}
         except aiohttp.ClientError:
             return {"syllabus": "", "objectives": ""}
-
+        finally:
+            # Update the progress bar
+            progress_bar.update(1)
 
 async def extend_course_dataframe(courses_df: pd.DataFrame, url_column: str) -> pd.DataFrame:
     """
-    Extend the DataFrame by extracting syllabus and objectives for each URL asynchronously.
+    Extend the DataFrame by extracting syllabus and objectives for each URL asynchronously,
+    with progress updates.
 
     Args:
         courses_df (pd.DataFrame): DataFrame containing a column of URLs.
@@ -56,16 +54,13 @@ async def extend_course_dataframe(courses_df: pd.DataFrame, url_column: str) -> 
     Returns:
         pd.DataFrame: Updated DataFrame with syllabus and objectives columns.
     """
-    tasks = [extract_course_details(url) for url in courses_df[url_column]]
-    extracted_data = []
-    with tqdm(total=len(tasks), desc="Fetching course details") as progress_bar:
-        for future in asyncio.as_completed(tasks):
-            result = await future
-            extracted_data.append(result)
-            progress_bar.update(1)
+    total_tasks = len(courses_df[url_column])
+    with tqdm(total=total_tasks, desc="Fetching course details") as progress_bar:
+        tasks = [extract_course_details(url, progress_bar) for url in courses_df[url_column]]
+        results = await asyncio.gather(*tasks)
 
-    extracted_df = pd.DataFrame(extracted_data)
-    extended_df = pd.concat([courses_df, extracted_df], axis=1)
+    extracted_df = pd.DataFrame(results)
+    extended_df = pd.concat([courses_df.reset_index(drop=True), extracted_df], axis=1)
     return extended_df
 
 
@@ -77,12 +72,10 @@ if __name__ == "__main__":
         'https://selcrs.nsysu.edu.tw/menu5/showoutline.asp?SYEAR=113&SEM=1&CrsDat=GEAI1369&Crsname=基礎訊號處理'
     ]}
 
-    # Create a DataFrame with URLs
     test_df = pd.DataFrame(data)
 
-    # Extend the DataFrame with syllabus and objectives
     async def main():
-      extended_courses_df = await extend_course_dataframe(test_df, 'url')
-      print(extended_courses_df)
+        extended_courses_df = await extend_course_dataframe(test_df, 'url')
+        print(extended_courses_df)
 
     asyncio.run(main())
