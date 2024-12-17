@@ -11,7 +11,7 @@ from src.service.relative_search_bi_encoder import CourseRerankerWithFieldMappin
 from src.service.final_response_generator import generate_final_response
 
 MAX_RETRY = 3
-USE_CROSS_ENCODER = True
+USE_CROSS_ENCODER = False
 
 app = Flask(__name__)
 # Enable CORS (Which allows the frontend to send requests to this server)
