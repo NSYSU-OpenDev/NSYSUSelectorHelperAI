@@ -60,7 +60,7 @@ yarn dev
 
 #### 更新課程資料並預先計算課程嵌入向量
 ```bash
-python backend/src/service/update_course.py
+python backend/src/service/update_courses.py
 python backend/src/service/pre_extract_courses_embed.py
 ```
 
