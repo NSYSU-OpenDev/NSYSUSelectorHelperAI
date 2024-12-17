@@ -65,7 +65,8 @@ def chat() -> Response:
 
     # Argument generation
     print('=== Generate Arguments ===')
-    final_response = generate_final_response(scored_courses_df, query_for_retrival)
+    last_user_message = [msg for msg in messages if msg.role == 'user'][-1].content
+    final_response = generate_final_response(scored_courses_df, query_for_retrival, last_user_message)
     print("=====================")
 
     # Build the response payload
