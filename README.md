@@ -32,8 +32,14 @@ https://forms.gle/gFBZDgkSbj85zukP6
 #### 建立 venv 環境 (自根目錄)
 ```bash
 cd backend
-python3 -m venv venv
+python -m venv venv
+
+# Windows
+venv\Scripts\activate
+
+# MacOS
 source venv/bin/activate
+
 pip install -r requirements.txt
 ```
 
@@ -60,8 +66,8 @@ yarn dev
 
 #### 更新課程資料並預先計算課程嵌入向量
 ```bash
-python backend/src/service/update_courses.py
-python backend/src/service/pre_extract_courses_embed.py
+python backend/scripts/update_courses.py
+python backend/scripts/pre_extract_courses_embed.py
 ```
 
 ## 已知問題：

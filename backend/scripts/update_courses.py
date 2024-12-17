@@ -3,7 +3,7 @@ import re
 
 from tqdm import tqdm
 
-from backend.src.api.courses_api import NSYSUCourseAPI
+from backend.scripts.api.courses_api import NSYSUCourseAPI
 
 DATA_STORAGE_PATH = 'backend/src/data/courses.csv'
 
