@@ -70,6 +70,13 @@ python backend/scripts/update_courses.py
 python backend/scripts/pre_extract_courses_embed.py
 ```
 
+### 生成評估標記
+
+#### 生成評估標記資料集
+```bash
+python backend/scripts/generated_query_target_set.py
+```
+
 ## 已知問題：
 * Safari 瀏覽器有可能會出現渲染問題，有任何選染錯誤請聯絡我，並註記您的瀏覽器版本。(如果願意擔當測試者，請在表單說想當 IOS 前端測試，不勝感激)
 
