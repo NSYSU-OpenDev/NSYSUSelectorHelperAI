@@ -28,7 +28,10 @@ def get_column_display_name(column: str) -> str:
         'teacher': '授課教師',
         'compulsory': '課程類型',
         'remaining': '剩餘名額',
-        'description': '課程描述'
+        'description': '課程描述',
+        'syllabus': '課程大綱',
+        'objectives': '課程目標',
+        'tags': '學程'
     }
 
     return column_mapping.get(column, column)
@@ -58,7 +61,7 @@ def format_prompt(data: pd.DataFrame, query_dict: Dict[str, str], max_columns: i
     key_columns = [
         'name', 'id', 'department', 'grade', 'credit',
         'teacher', 'compulsory', 'remaining', 'description',
-        'syllabus', 'objectives'
+        'syllabus', 'objectives', 'tags'
     ]
 
     # Ensure these columns exist, use those that do
