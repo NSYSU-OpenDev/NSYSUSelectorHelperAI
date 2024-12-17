@@ -37,9 +37,6 @@ class CourseFieldEmbeddingPreprocessor:
 
 
 if __name__ == "__main__":
-    # Load course data
-    courses_df = pd.read_csv('../data/courses.csv')
-
     # Preprocess and save embeddings
     preprocessor = CourseFieldEmbeddingPreprocessor()
-    preprocessor.preprocess_courses(courses_df, output_file='../data/precomputed_field_embeddings.pt')
+    preprocessor.preprocess_courses(pd.read_csv('backend/src/data/courses.csv'), output_file='backend/src/data/precomputed_field_embeddings.pt')

@@ -1,6 +1,6 @@
 from backend.src.api.courses_api import NSYSUCourseAPI
 
-DATA_STORAGE_PATH = '../data/courses.csv'
+DATA_STORAGE_PATH = 'backend/src/data/courses.csv'
 
 def update_courses():
     """

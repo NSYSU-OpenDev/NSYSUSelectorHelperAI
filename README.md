@@ -29,7 +29,7 @@ https://forms.gle/gFBZDgkSbj85zukP6
 
 ### 後端
 
-#### 建立 venv 環境
+#### 建立 venv 環境 (自根目錄)
 ```bash
 cd backend
 python3 -m venv venv
@@ -37,23 +37,31 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-#### 啟動後端 (<root>/)
+#### 啟動後端 (自根目錄)
 ```bash
-cd .. # 回到根目錄 (若你在 backend 資料夾)
 python backend/app.py
 ```
 
 ### 前端
 
-#### 安裝套件
+#### 安裝套件 (自根目錄)
 ```bash
 cd frontend
 yarn
 ```
 
-#### 啟動前端 (<root>/frontend/)
+#### 啟動前端 (自根目錄)
 ```bash
+cd frontend
 yarn dev
+```
+
+### 更新後端課程
+
+#### 更新課程資料並預先計算課程嵌入向量
+```bash
+python backend/src/service/update_course.py
+python backend/src/service/pre_extract_courses_embed.py
 ```
 
 ## 已知問題：
