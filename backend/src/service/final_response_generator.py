@@ -228,7 +228,9 @@ if __name__ == "__main__":
             ],
             "description": "《講授類》\n本課程介紹資訊管理的基本概念",
             "tags": ["核心課程"],
-            "english": False
+            "english": False,
+            "syllabus": "本課程介紹資訊管理的基本概念",
+            "objectives": "學生將學習資訊管理的基本概念"
         },
         {
             "url": "https://selcrs.nsysu.edu.tw/menu5/showoutline.asp?SYEAR=113&SEM=1&CrsDat=IM102&Crsname=數據分析",
@@ -260,12 +262,14 @@ if __name__ == "__main__":
             ],
             "description": "《實作類》\n本課程著重於數據分析技術的實作。",
             "tags": ["選修課"],
-            "english": False
+            "english": False,
+            "syllabus": "本課程著重於數據分析技術的實作。",
+            "objectives": "學生將學習數據分析技術的實作。"
         },
         # Additional courses can be added here
     ])
     test_query_dict = {'department': '資管', 'grade': 4}
 
     # Generating a response
-    test_response = generate_final_response(df, test_query_dict)
+    test_response = generate_final_response(df, test_query_dict, "幫我分析一下資訊管理系四年級的課程，是否好選上")
     print(test_response)
