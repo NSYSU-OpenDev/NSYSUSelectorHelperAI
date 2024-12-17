@@ -1,3 +1,5 @@
+from typing import List
+
 import pandas as pd
 import torch
 from dotenv import load_dotenv
@@ -30,33 +32,73 @@ class QueryTargetWithTagsGenerator:
             for tag in row['tags']:
                 self.tag_to_courses.setdefault(tag, []).append(row['id'])
 
-    def batch_generate_queries(self, tags: list) -> list:
+    def batch_generate_queries(self, tags: List[str]) -> List[str]:
         """
-        Generate batch queries using Hugging Face's transformer model.
+        Generate batch queries using a Hugging Face transformer model with few-shot examples.
         :param tags: List of tags to generate queries for.
         :return: List of generated queries corresponding to the tags.
         """
-        # Prepare prompts for batch processing
-        queries = []
-        messages = [
-            {"role": "system",
-             "content": "你是一個專業的語言模型助手，專門根據提供的學程名稱生成可能由學生提出的自然詢問課程問題。你的回答應該模擬學生在搜尋學程相關課程時的問句，語氣應輕鬆自然且貼近日常使用。"},
+        # Define the system message
+        system_message = {
+            "role": "system",
+            "content": (
+                "你是一個專業的語言模型助手，專門根據提供的學程名稱生成可能由學生提出的自然詢問課程問題。"
+                "你的回答應該模擬學生在搜尋學程相關課程時的問句，語氣應輕鬆自然且貼近日常使用。"
+            )
+        }
+
+        # Few-shot examples to guide the model
+        few_shot_examples = [
+            {"role": "user", "content": "學程名稱：人工智慧學程\n請生成一個學生可能會詢問該學程相關課程的自然問題。"},
+            {"role": "assistant",
+             "content": "您好，我對科技類的學程很有興趣，請問有沒有推薦一些能學習機器人或AI相關知識的課程？"},
+
+            {"role": "user", "content": "學程名稱：數據科學學程\n請生成一個學生可能會詢問該學程相關課程的自然問題。"},
+            {"role": "assistant", "content": "最近聽說數據很重要，請問有沒有適合初學者的數據分析學程？"},
+
+            {"role": "user", "content": "學程名稱：機器學習學程\n請生成一個學生可能會詢問該學程相關課程的自然問題。"},
+            {"role": "assistant", "content": "我想學習如何讓電腦進行自動化學習，請問有哪些課程可以推薦？"},
+
+            {"role": "user", "content": "學程名稱：大數據分析學程\n請生成一個學生可能會詢問該學程相關課程的自然問題。"},
+            {"role": "assistant",
+             "content": "您好，我對數據很感興趣，有沒有課程可以學習如何分析大量數據？像是商業應用或視覺化分析？"},
+
+            {"role": "user", "content": "學程名稱：自然語言處理學程\n請生成一個學生可能會詢問該學程相關課程的自然問題。"},
+            {"role": "assistant", "content": "有沒有專門學習語音識別或自動翻譯技術的課程？我想了解這類的技術如何運作。"},
         ]
+
+        # Initialize list to store generated queries
+        queries = []
 
         # Generate queries for each tag
         for tag in tags:
-            user_message = {"role": "user", "content": f"""學程名稱：{tag}
-請生成一個學生可能會詢問該學程相關課程的自然問題。"""}
+            # Add the current tag to the user message
+            user_message = {
+                "role": "user",
+                "content": f"學程名稱：{tag}\n請生成一個學生可能會詢問該學程相關課程的自然問題。"
+            }
 
-            response = self.pipeline(
-                messages + [user_message],
-                max_new_tokens=100,
-                do_sample=True,
-                top_k=50,
-                temperature=0.7
-            )
-            query = response[0]["generated_text"].split("Query:")[-1].strip()
-            queries.append(query)
+            # Combine system message, few-shot examples, and the user message
+            messages = [system_message] + few_shot_examples + [user_message]
+
+            try:
+                # Generate response using the pipeline
+                response = self.pipeline(
+                    messages,
+                    max_new_tokens=50,
+                    do_sample=True,
+                    top_k=50,
+                    temperature=0.7
+                )
+
+                # Extract and clean the response content
+                query = response[0]['generated_text'][-1]['content'].strip()
+                queries.append(query)
+
+            except Exception as e:
+                print(f"Error generating query for tag '{tag}': {e}")
+                queries.append("Error: Failed to generate query")
+
         return queries
 
     def create_dataset(self, output_file: str, num_queries_per_tag: int = 3):
