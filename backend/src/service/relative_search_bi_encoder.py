@@ -22,13 +22,13 @@ class CourseRerankerWithFieldMapping:
         # Query-field mapping
         self.query_field_mapping = {
             "teacher": ["teacher"],
-            "course_name": ["name", "description", "objectives", "syllabus", "tags"],
+            "keywords": ["name", "description", "objectives", "syllabus", "tags"],
             "department": ["department"],
             "program": ["tags"],
         }
 
-        # Field weights for course_name
-        self.course_name_weights = {
+        # Field weights for keywords
+        self.keywords_weights = {
             'name': 0.4,
             'description': 0.2,
             'objectives': 0.15,
@@ -54,11 +54,11 @@ class CourseRerankerWithFieldMapping:
             if not query_value:
                 continue
 
-            if query_field == "course_name":  # Weighted scoring for course_name
+            if query_field == "keywords":  # Weighted scoring for keywords
                 query_embedding = self.model.encode(query_value, convert_to_tensor=True)
-                for field, weight in self.course_name_weights.items():
+                for field, weight in self.keywords_weights.items():
                     if field in self.field_embeddings:
-                        print(f"Scoring {field} for 'course_name' with weight {weight}")
+                        print(f"Scoring {field} for 'keywords' with weight {weight}")
                         field_scores = util.cos_sim(query_embedding, self.field_embeddings[field])
                         relevance_scores += weight * field_scores.squeeze()
             elif query_field == "grade":  # Filter directly for grade

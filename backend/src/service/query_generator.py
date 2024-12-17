@@ -82,7 +82,7 @@ def generate_potential_query(messages: List[Message], model: str = "llama-3.3-70
                                     "type": "string",
                                     "description": "Name of the course teacher or instructor. Provide the name if the course has a specific instructor."
                                 },
-                                "course_name": {
+                                "keywords": {
                                     "type": "string",
                                     "description": "Name or keyword for the course (excluding teacher's name).",
                                     "default": "course recommendation"
