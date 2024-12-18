@@ -34,6 +34,7 @@ def read_system_prompt(file_path: str = './prompt.txt') -> str:
         2. Output the query in a structured format
         """
 
+
 """
 Available models:
 - gemma2-9b-it
@@ -42,6 +43,8 @@ Available models:
 - llama-3.2-3b-preview
 - llama-3.3-70b-versatile
 """
+
+
 def generate_potential_query(messages: List[Message], model: str = "llama-3.3-70b-versatile") -> Dict[str, str]:
     """
     Convert dialog to potential query using Groq
@@ -84,7 +87,7 @@ def generate_potential_query(messages: List[Message], model: str = "llama-3.3-70
                                 },
                                 "keywords": {
                                     "type": "string",
-                                    "description": "Name or keyword for the course (excluding teacher's name).",
+                                    "description": "Name or keyword for the course (excluding teacher's name). Notice: The user might contain typos or abbreviations you need to correct them into correct keywords.",
                                     "default": "course recommendation"
                                 },
                                 "department": {

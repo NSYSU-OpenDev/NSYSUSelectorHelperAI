@@ -41,7 +41,7 @@ def format_prompt(
     data: pd.DataFrame,
     query_dict: Dict[str, str],
     last_user_message: str,
-    max_columns: int = 5
+    max_columns: int = 10,
 ) -> str:
     """
     Dynamically format the prompt with relevant information from the DataFrame.
@@ -168,7 +168,11 @@ def connect_to_groq(api_key: str, prompt: str) -> Dict[str, Any]:
         return {"error": str(e)}
 
 
-def generate_final_response(data: pd.DataFrame, query_dict: Dict[str, str], last_user_message: str) -> Dict[str, str]:
+def generate_final_response(
+    data: pd.DataFrame,
+    query_dict: Dict[str, str],
+    last_user_message: str,
+) -> Dict[str, str]:
     """
     Generate the final response using the Groq API.
 
