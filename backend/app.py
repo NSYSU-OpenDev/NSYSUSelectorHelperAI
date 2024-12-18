@@ -1,15 +1,15 @@
 from typing import List, Dict
 
+import pandas as pd
 from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
-import pandas as pd
 from typing_extensions import Tuple
 
-from src.types.chat_types import ChatRequest, Message, ChatResponse
+from src.service.final_response_generator import generate_final_response
 from src.service.query_generator import generate_potential_query
 from src.service.relative_search import CourseReranker
 from src.service.relative_search_bi_encoder import CourseRerankerWithFieldMapping
-from src.service.final_response_generator import generate_final_response
+from src.types.chat_types import ChatRequest, Message, ChatResponse
 
 MAX_RETRY = 3
 USE_CROSS_ENCODER = False
@@ -27,9 +27,22 @@ else:
 
 
 def main_pipeline(
-    messages: List[Message],
-    _semesters: str, current_selected_course_ids: List[str], # TODO: Use for different semester support
+    messages: List['Message'],
+    _semesters: str, # TODO: Use for different semester support
+    _current_selected_course_ids: List[str], # TODO: Use for additional support suggestions
 ) -> Tuple[Dict[str, str], List[str]]:
+    """
+    Main pipeline for the chatbot.
+
+    Args:
+        messages (List[Message]): The list of messages in the conversation.
+        _semesters (str): The selected semesters.
+        _current_selected_course_ids (List[str]): The selected course IDs.
+
+    Returns:
+        Tuple[Dict[str, str], List[str]]: The final response and ranked course IDs.
+        The response is a dictionary with 'response' key when successful. Otherwise, it will contain an 'error' key.
+    """
     retry = 0
 
     courses_df = pd.read_csv('backend/src/data/courses.csv')

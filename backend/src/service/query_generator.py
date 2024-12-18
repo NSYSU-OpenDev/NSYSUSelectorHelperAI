@@ -1,17 +1,18 @@
 import json
 import os
-from typing import List, Dict
+from typing import List, Dict, TYPE_CHECKING
 
 from dotenv import load_dotenv
 from groq import Groq
 
-from backend.src.types.chat_types import Message
+if TYPE_CHECKING:
+    from backend.src.types.chat_types import Message
 
 # Load environment variables
 load_dotenv()
 
 
-def convert_messages_to_groq_format(messages: List[Message]) -> List[dict]:
+def convert_messages_to_groq_format(messages: List['Message']) -> List[dict]:
     """
     Convert a Message list to Groq API message format
     """
@@ -45,7 +46,7 @@ Available models:
 """
 
 
-def generate_potential_query(messages: List[Message], model: str = "llama-3.3-70b-versatile") -> Dict[str, str]:
+def generate_potential_query(messages: List['Message'], model: str = "llama-3.3-70b-versatile") -> Dict[str, str]:
     """
     Convert dialog to potential query using Groq
     """
