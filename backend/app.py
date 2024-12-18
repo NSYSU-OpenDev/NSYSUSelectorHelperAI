@@ -1,8 +1,9 @@
-from typing import List
+from typing import List, Dict
 
 from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 import pandas as pd
+from typing_extensions import Tuple
 
 from src.types.chat_types import ChatRequest, Message, ChatResponse
 from src.service.query_generator import generate_potential_query
@@ -22,26 +23,16 @@ if USE_CROSS_ENCODER:
     ranker = CourseReranker()
 else:
     # Initialize and use the reranker with precomputed embeddings
-    ranker = CourseRerankerWithFieldMapping(embeddings_file='src/data/precomputed_field_embeddings.pt')
-
-@app.route('/chat', methods=['POST'])
-def chat() -> Response:
-    data: ChatRequest = ChatRequest.from_dict(request.json)
-    messages: List[Message] = data.messages
-    semesters: str = data.semesters
-    current_selected_course_ids: List[str] = data.current_selected_course_id
-
-    # Debugging
-    print("=== Received data ===")
-    print(f"semesters: {semesters}")
-    [print(f"role: {msg.role}, content: {msg.content}") for msg in messages]
-    print(f"currentSelectedCourseId: {current_selected_course_ids}")
-    print("=====================")
+    ranker = CourseRerankerWithFieldMapping(embeddings_file='backend/src/data/precomputed_field_embeddings.pt')
 
 
+def main_pipeline(
+    messages: List[Message],
+    _semesters: str, current_selected_course_ids: List[str], # TODO: Use for different semester support
+) -> Tuple[Dict[str, str], List[str]]:
     retry = 0
 
-    courses_df = pd.read_csv('src/data/courses.csv')
+    courses_df = pd.read_csv('backend/src/data/courses.csv')
     scored_courses_df = None
     query_for_retrival = None
     ranked_course_ids = courses_df['id'].tolist()
@@ -69,10 +60,31 @@ def chat() -> Response:
     final_response = generate_final_response(scored_courses_df, query_for_retrival, last_user_message)
     print("=====================")
 
+    return final_response, ranked_course_ids
+
+
+@app.route('/chat', methods=['POST'])
+def chat() -> Response:
+    data: ChatRequest = ChatRequest.from_dict(request.json)
+    messages: List[Message] = data.messages
+    semesters: str = data.semesters
+    current_selected_course_ids: List[str] = data.current_selected_course_id
+
+    # Debugging
+    print("=== Received data ===")
+    print(f"semesters: {semesters}")
+    [print(f"role: {msg.role}, content: {msg.content}") for msg in messages]
+    print(f"currentSelectedCourseId: {current_selected_course_ids}")
+    print("=====================")
+
+    # Main pipeline
+    final_response, ranked_course_ids = main_pipeline(messages, semesters, current_selected_course_ids)
+
     # Build the response payload
     response: ChatResponse = ChatResponse(response=final_response['response'], ranked_course_ids=ranked_course_ids)
 
     return jsonify(response.to_dict())
+
 
 if __name__ == '__main__':
     app.run(debug=True)
