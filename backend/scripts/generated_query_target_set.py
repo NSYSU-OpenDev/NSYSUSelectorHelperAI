@@ -32,6 +32,16 @@ class QueryTargetWithTagsGenerator:
             for tag in row['tags']:
                 self.tag_to_courses.setdefault(tag, []).append(row['id'])
 
+    def _get_related_courses(self, tag: str) -> List[str]:
+        """
+        Retrieve course names related to a specific tag.
+        :param tag: The academic program tag.
+        :return: List of related course names.
+        """
+        course_ids = self.tag_to_courses.get(tag, [])
+        related_courses = self.courses_df[self.courses_df['id'].isin(course_ids)]['name'].tolist()
+        return related_courses
+
     def batch_generate_queries(self, tags: List[str]) -> List[str]:
         """
         Generate batch queries using a Hugging Face transformer model with few-shot examples.
@@ -42,29 +52,21 @@ class QueryTargetWithTagsGenerator:
         system_message = {
             "role": "system",
             "content": (
-                "你是一個專業的語言模型助手，專門根據提供的學程名稱生成可能由學生提出的自然詢問課程問題。"
-                "你的回答應該模擬學生在搜尋學程相關課程時的問句，語氣應輕鬆自然且貼近日常使用。"
-            )
+                "你是一個專業的語言模型助手，專門根據提供的學程名稱和相關課程名稱生成學生可能會提出的自然詢問問題。"
+                "用戶會提供學程名稱與相關課程名稱，你需要生成自然語言的問題，語氣應輕鬆自然，模擬學生的查詢需求，且避免直接使用課程名稱。"
+            ),
         }
 
         # Few-shot examples to guide the model
         few_shot_examples = [
-            {"role": "user", "content": "學程名稱：人工智慧學程\n請生成一個學生可能會詢問該學程相關課程的自然問題。"},
-            {"role": "assistant",
-             "content": "您好，我對科技類的學程很有興趣，請問有沒有推薦一些能學習機器人或AI相關知識的課程？"},
+            {"role": "user", "content": "學程名稱：人工智慧學程\n相關課程：人工智慧導論、機器學習\n請生成一個學生可能會詢問的自然問題。"},
+            {"role": "assistant", "content": "我對AI很感興趣，有沒有推薦適合初學者的人工智慧或機器學習課程？"},
 
-            {"role": "user", "content": "學程名稱：數據科學學程\n請生成一個學生可能會詢問該學程相關課程的自然問題。"},
-            {"role": "assistant", "content": "最近聽說數據很重要，請問有沒有適合初學者的數據分析學程？"},
+            {"role": "user", "content": "學程名稱：數據科學學程\n相關課程：數據分析基礎、大數據處理\n請生成一個學生可能會詢問的自然問題。"},
+            {"role": "assistant", "content": "最近想學習數據分析，請問有哪些基礎的大數據課程推薦？"},
 
-            {"role": "user", "content": "學程名稱：機器學習學程\n請生成一個學生可能會詢問該學程相關課程的自然問題。"},
-            {"role": "assistant", "content": "我想學習如何讓電腦進行自動化學習，請問有哪些課程可以推薦？"},
-
-            {"role": "user", "content": "學程名稱：大數據分析學程\n請生成一個學生可能會詢問該學程相關課程的自然問題。"},
-            {"role": "assistant",
-             "content": "您好，我對數據很感興趣，有沒有課程可以學習如何分析大量數據？像是商業應用或視覺化分析？"},
-
-            {"role": "user", "content": "學程名稱：自然語言處理學程\n請生成一個學生可能會詢問該學程相關課程的自然問題。"},
-            {"role": "assistant", "content": "有沒有專門學習語音識別或自動翻譯技術的課程？我想了解這類的技術如何運作。"},
+            {"role": "user", "content": "學程名稱：自然語言處理學程\n相關課程：語音識別技術、機器翻譯\n請生成一個學生可能會詢問的自然問題。"},
+            {"role": "assistant", "content": "我想了解語音識別或自動翻譯技術，有推薦的課程嗎？"},
         ]
 
         # Initialize list to store generated queries
@@ -72,28 +74,40 @@ class QueryTargetWithTagsGenerator:
 
         # Generate queries for each tag
         for tag in tags:
-            # Add the current tag to the user message
-            user_message = {
-                "role": "user",
-                "content": f"學程名稱：{tag}\n請生成一個學生可能會詢問該學程相關課程的自然問題。"
-            }
-
-            # Combine system message, few-shot examples, and the user message
-            messages = [system_message] + few_shot_examples + [user_message]
-
             try:
+                # Retrieve related course names for the current tag
+                related_courses = self._get_related_courses(tag)
+                course_list = "、".join(related_courses)
+
+                # Add the current tag and related courses to the user message
+                user_message = {
+                    "role": "user",
+                    "content": (
+                        f"學程名稱：{tag}\n"
+                        f"相關課程：{course_list}\n"
+                        "請生成一個學生可能會詢問的自然問題。"
+                    )
+                }
+
+                # Combine system message, few-shot examples, and the user message
+                messages = [system_message] + few_shot_examples + [user_message]
+
                 # Generate response using the pipeline
                 response = self.pipeline(
                     messages,
-                    max_new_tokens=50,
+                    max_new_tokens=512,
                     do_sample=True,
                     top_k=50,
-                    temperature=0.7
+                    temperature=0.7,
+                    pad_token_id=self.pipeline.tokenizer.eos_token_id,
                 )
 
-                # Extract and clean the response content
+                # Properly extract and clean the generated text
                 query = response[0]['generated_text'][-1]['content'].strip()
-                queries.append(query)
+                if query:
+                    queries.append(query)
+                else:
+                    raise ValueError("Unexpected response format")
 
             except Exception as e:
                 print(f"Error generating query for tag '{tag}': {e}")
