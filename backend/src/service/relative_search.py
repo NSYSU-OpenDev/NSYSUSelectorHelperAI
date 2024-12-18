@@ -26,7 +26,7 @@ class CourseReranker:
         Returns:
             pd.DataFrame: The courses dataframe with relevance scores.
         """
-        combined_query = " ".join(search_query.values())
+        combined_query = " ".join(map(str, search_query.values()))
         courses_df['combined_text'] = (
             courses_df['name'].fillna('') + " " +
             courses_df['teacher'].fillna('') + " " +
