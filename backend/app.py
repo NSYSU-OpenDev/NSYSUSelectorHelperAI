@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List, Dict, Union
 
 import pandas as pd
 from flask import Flask, request, jsonify, Response
@@ -30,7 +30,8 @@ def main_pipeline(
     messages: List['Message'],
     _semesters: str, # TODO: Use for different semester support
     _current_selected_course_ids: List[str], # TODO: Use for additional support suggestions
-) -> Tuple[Dict[str, str], List[str]]:
+    generate_final_response_at_end: bool = True,
+) -> Tuple[Union[Dict[str, str], None], List[str]]:
     """
     Main pipeline for the chatbot.
 
@@ -38,6 +39,7 @@ def main_pipeline(
         messages (List[Message]): The list of messages in the conversation.
         _semesters (str): The selected semesters.
         _current_selected_course_ids (List[str]): The selected course IDs.
+        generate_final_response_at_end (bool): Whether to generate the final response at the end.
 
     Returns:
         Tuple[Dict[str, str], List[str]]: The final response and ranked course IDs.
@@ -67,11 +69,14 @@ def main_pipeline(
         # TODO: Add more conditions for check performance
         break
 
-    # Argument generation
-    print('=== Generate Arguments ===')
-    last_user_message = [msg for msg in messages if msg.role == 'user'][-1].content
-    final_response = generate_final_response(scored_courses_df, query_for_retrival, last_user_message)
-    print("=====================")
+    final_response = None
+    # Generate final response
+    if generate_final_response_at_end:
+        # Argument generation
+        last_user_message = [msg for msg in messages if msg.role == 'user'][-1].content
+        print('=== Generate Final Response ===')
+        final_response = generate_final_response(scored_courses_df, query_for_retrival, last_user_message)
+        print("=====================")
 
     return final_response, ranked_course_ids
 

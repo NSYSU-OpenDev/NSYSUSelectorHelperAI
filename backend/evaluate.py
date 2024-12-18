@@ -66,7 +66,9 @@ def evaluate_pipeline_with_map(
             _, ranked_course_ids = pipeline(
                 messages=[Message(role="user", content=query)],
                 _semesters="",
-                _current_selected_course_ids=[]
+                _current_selected_course_ids=[],
+                # In evaluation, we only need the ranked course IDs, which are not required for Argument Generation
+                generate_final_response_at_end=False,
             )
 
         # Determine the relevance of each retrieved course
