@@ -97,12 +97,12 @@ class EntryNotification extends Component {
           <p>{ENTRY_NOTIFICATION_CONFIG.description}</p>
 
           <TextWithIcon>
-            <ArrowUpCircle /> 更新內容：
+            <ArrowUpCircle /> 更新內容 Updates：
           </TextWithIcon>
           <ul>{this.renderList(ENTRY_NOTIFICATION_CONFIG.updates)}</ul>
 
           <TextWithIcon>
-            <FileEarmarkText /> 回饋表單：
+            <FileEarmarkText /> 回饋表單 Feedback：
           </TextWithIcon>
           <ul>
             <li>

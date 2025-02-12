@@ -111,7 +111,7 @@ class Item extends Component<ItemProps, ItemState> {
             {Object.entries(this.infoCells).map(([displayName, courseKey]) => (
               <Stack
                 key={displayName}
-                className='bg-body-secondary p-1 rounded-2 text-center'
+                className='bg-body-secondary p-1 rounded-2 text-center w-50'
               >
                 <div className='fw-bolder'>{displayName}</div>
                 <div>{course[courseKey]}</div>

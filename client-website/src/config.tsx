@@ -13,8 +13,9 @@ import {
 } from './types';
 
 export const ANNOUNCEMENT_DATA = {
-  version: 'v5.1.0',
+  version: 'v5.1.1',
   feedbackFormUrl: 'https://forms.gle/gFBZDgkSbj85zukP6',
+  DCForumUrl: "https://discord.gg/Md4x9frrHf",
   description: [
     <>
       此網站式依據電腦的使用者體驗設計，建議
@@ -31,20 +32,13 @@ export const ANNOUNCEMENT_DATA = {
       <span className='text-danger fw-bold'>
         如果實驗性功能有任何問題，請聯絡我
       </span>
-    </>,
+    </>
   ],
   updates: [
-    '實驗性功能：改用自動更新API，資料將每小時更新一次。',
-    '自動選課改稱課程偵探，並且改成排序列表',
-    '新版前端完成了！手機版也有了！',
-    '新增課程偵探時間點擊篩選功能',
-    '一鍵登記與已選課程合併了',
-    '新增課程偵探排序功能',
-    '新增匯入與匯出功能',
-    '優化課程動態渲染',
-    '可以收起課表了',
+    '改用自動更新API，資料將每小時更新一次。',
   ],
   features: [
+    '超漂亮UI',
     '課表動態更新',
     '一鍵加入必修課',
     '更強大的篩選器以及智慧搜尋',
@@ -77,8 +71,8 @@ export const ANNOUNCEMENT_DATA = {
   githubUrl: 'https://github.com/CelleryLin/selector_helper/',
   contactEmail: 'yochen0123@gmail.com',
   copyright: [
-    'By Cellery Lin and whats2000. MEME113 ',
-    'Copyright © 2023 Cellery Lin and whats2000. All rights reserved.',
+    'By Cellery Lin (MEM113) and whats2000 (MIS114).',
+    `MIT License, Copyright © ${new Date().getFullYear()} Cellery Lin and whats2000. All rights reserved.`,
   ],
 };
 
@@ -86,24 +80,35 @@ export const ENTRY_NOTIFICATION_CONFIG = {
   version: ANNOUNCEMENT_DATA.version,
   description: (
     <>
-      我們已更新使用條款，當您使用本網站時，即表示您同意
-      <a
-        href='https://github.com/CelleryLin/selector_helper/blob/main/term_of_use.md'
-        target='_blank'
-        rel='noreferrer noopener'
-      >
-        使用條款
-      </a>
+      <ul>
+        <li>
+          中山選課論壇DC現在啟用啦！
+          <a
+            href={ANNOUNCEMENT_DATA.DCForumUrl}
+            target='_blank'
+            rel='noreferrer noopener'
+          >
+            點我前往
+          </a>
+          ，歡迎大家多加利用。
+        </li>
+        <li>
+          We are now looking for the frontend developer to improve experience for English users. 
+          If you are interested, please fill out the &nbsp;
+          <a
+            href={ANNOUNCEMENT_DATA.feedbackFormUrl}
+            target='_blank'
+            rel='noreferrer noopener'
+          >
+            form below
+          </a>
+          , or contact me (yochen0123@gmail.com) directly.
+        </li>
+      </ul>
     </>
   ),
   updates: [
-    <a
-      href='https://github.com/CelleryLin/selector_helper/blob/main/term_of_use.md'
-      target='_blank'
-      rel='noreferrer noopener'
-    >
-      使用條款
-    </a>,
+    "引入課程API，課程資料現在會每小時更新一次",
   ],
   feedbackFormUrl: ANNOUNCEMENT_DATA.feedbackFormUrl,
 };

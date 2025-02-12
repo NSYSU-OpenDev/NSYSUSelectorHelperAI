@@ -52,7 +52,7 @@ class Announcement extends Component<AnnouncementProps> {
           <Row>
             <Col lg={6} md={6}>
               <TextWithIcon>
-                <JournalText /> 更新紀錄：
+                <JournalText /> 更新紀錄 Courses Data Status
               </TextWithIcon>
               <ul>
                 <li>學期課程資料: {convertVersion(latestCourseHistoryData)}</li>
@@ -60,10 +60,23 @@ class Announcement extends Component<AnnouncementProps> {
             </Col>
             <Col lg={6} md={6}>
               <TextWithIcon>
-                <FileEarmarkText /> 回饋表單：
+                <ArrowUpCircle /> 更新內容 Updates
+              </TextWithIcon>
+              <ul>{this.renderList(ANNOUNCEMENT_DATA.updates)}</ul>
+            </Col>
+            <Col lg={6} md={6}>
+              <TextWithIcon>
+                <InfoCircle /> 使用須知
+              </TextWithIcon>
+              <ul>{this.renderList(ANNOUNCEMENT_DATA.description)}</ul>
+            </Col>
+            <Col lg={6} md={6}>
+              <TextWithIcon>
+                <FileEarmarkText /> 相關連結 Urls
               </TextWithIcon>
               <ul>
                 <li>
+                  回饋表單 Feedback: <br />
                   <a
                     href={ANNOUNCEMENT_DATA.feedbackFormUrl}
                     target='_blank'
@@ -72,35 +85,33 @@ class Announcement extends Component<AnnouncementProps> {
                     {ANNOUNCEMENT_DATA.feedbackFormUrl}
                   </a>
                 </li>
+                <li>
+                  選課論壇 Discord Forum: <br />
+                  <a
+                    href={ANNOUNCEMENT_DATA.DCForumUrl}
+                    target='_blank'
+                    rel='noreferrer'
+                  >
+                    {ANNOUNCEMENT_DATA.DCForumUrl}
+                  </a>
+                </li>
               </ul>
             </Col>
             <Col lg={6} md={6}>
               <TextWithIcon>
-                <InfoCircle /> 使用須知：
-              </TextWithIcon>
-              <ul>{this.renderList(ANNOUNCEMENT_DATA.description)}</ul>
-            </Col>
-            <Col lg={6} md={6}>
-              <TextWithIcon>
-                <ArrowUpCircle /> 更新內容：
-              </TextWithIcon>
-              <ul>{this.renderList(ANNOUNCEMENT_DATA.updates)}</ul>
-            </Col>
-            <Col lg={6} md={6}>
-              <TextWithIcon>
-                <Gear /> 主要功能：
+                <Gear /> 主要功能 Main Features
               </TextWithIcon>
               <ul>{this.renderList(ANNOUNCEMENT_DATA.features)}</ul>
             </Col>
             <Col lg={6} md={6}>
               <TextWithIcon>
-                <ExclamationCircle /> 已知問題：
+                <ExclamationCircle /> 已知問題 Known Issues
               </TextWithIcon>
               <ul>{this.renderList(ANNOUNCEMENT_DATA.knownIssues)}</ul>
             </Col>
             <Col lg={6} md={6}>
               <TextWithIcon>
-                <CodeSlash /> 專案程式：
+                <CodeSlash /> 專案程式 Source Code
               </TextWithIcon>
               <ul>
                 <li>
@@ -116,7 +127,7 @@ class Announcement extends Component<AnnouncementProps> {
             </Col>
             <Col lg={6} md={6}>
               <TextWithIcon>
-                <Envelope /> 錯誤回報 & 聯絡：
+                <Envelope /> 錯誤回報 & 聯絡 Reporting Issue
               </TextWithIcon>
               <ul>
                 <li>

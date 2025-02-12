@@ -59,7 +59,11 @@ export const StyledPopover = styled(Popover)`
   &.popover {
     // whats2000: 正式修正彈出視窗位置抖動問題
     position: fixed;
-    max-width: 400px;
+    max-width: 500px;
+    
+    @media screen and (max-width: 992px) {
+      max-width: 100vw;
+    }
   }
 `;
 
