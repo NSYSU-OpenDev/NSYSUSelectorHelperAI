@@ -15,7 +15,7 @@ import {
 export const ANNOUNCEMENT_DATA = {
   version: 'v5.1.1',
   feedbackFormUrl: 'https://forms.gle/gFBZDgkSbj85zukP6',
-  DCForumUrl: "https://discord.gg/Md4x9frrHf",
+  DCForumUrl: 'https://discord.gg/Md4x9frrHf',
   description: [
     <>
       此網站式依據電腦的使用者體驗設計，建議
@@ -32,11 +32,9 @@ export const ANNOUNCEMENT_DATA = {
       <span className='text-danger fw-bold'>
         如果實驗性功能有任何問題，請聯絡我
       </span>
-    </>
+    </>,
   ],
-  updates: [
-    '改用自動更新API，資料將每小時更新一次。',
-  ],
+  updates: ['改用自動更新API，資料將每小時更新一次。'],
   features: [
     '超漂亮UI',
     '課表動態更新',
@@ -53,7 +51,9 @@ export const ANNOUNCEMENT_DATA = {
     '如果有任何使用上卡頓的問題，請幫忙填寫表單反饋，並註記位置。',
     <>
       課程資料是爬蟲下來的靜態資料，更新會每小時執行一次，請開啟實驗性功能，來體驗更即時課程更新。有興趣用此API的人可以參考
-      <a href='https://github.com/whats2000/NSYSUCourseAPI'>中山課程開放API</a>
+      <a href='https://github.com/nsysu-opendev/NSYSUCourseAPI'>
+        中山課程開放API
+      </a>
     </>,
   ],
   termsofuse: [
@@ -93,8 +93,8 @@ export const ENTRY_NOTIFICATION_CONFIG = {
           ，歡迎大家多加利用。
         </li>
         <li>
-          We are now looking for the frontend developer to improve experience for English users. 
-          If you are interested, please fill out the &nbsp;
+          We are now looking for the frontend developer to improve experience
+          for English users. If you are interested, please fill out the &nbsp;
           <a
             href={ANNOUNCEMENT_DATA.feedbackFormUrl}
             target='_blank'
@@ -107,9 +107,7 @@ export const ENTRY_NOTIFICATION_CONFIG = {
       </ul>
     </>
   ),
-  updates: [
-    "引入課程API，課程資料現在會每小時更新一次",
-  ],
+  updates: ['引入課程API，課程資料現在會每小時更新一次'],
   feedbackFormUrl: ANNOUNCEMENT_DATA.feedbackFormUrl,
 };
 

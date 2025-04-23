@@ -1,6 +1,6 @@
 import { AcademicYear, NSYSUCourse, SemesterUpdate } from '@/types';
 
-const BASE_URL = 'https://whats2000.github.io/NSYSUCourseAPI';
+const BASE_URL = 'https://nsysu-opendev.github.io/NSYSUCourseAPI';
 
 export class NSYSUCourseAPI {
   /**
