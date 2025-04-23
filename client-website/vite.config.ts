@@ -17,5 +17,5 @@ export default defineConfig({
       { find: '#', replacement: resolve(__dirname, 'src/components') },
     ],
   },
-  base: '/SelectorHelperAI/',
+  base: '/NSYSUSelectorHelperAI/',
 });
