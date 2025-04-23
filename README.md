@@ -1,6 +1,6 @@
-# 中山大學選課助手 React TypeScript 版
+# 中山大學選課助手 AI 版
 ## 進入網頁
-https://CelleryLin.github.io/selector_helper/
+https://nsysu-opendev.github.io/SelectorHelperAI/
 
 ## 回饋表單：
 https://forms.gle/gFBZDgkSbj85zukP6
