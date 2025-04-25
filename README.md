@@ -1,6 +1,6 @@
 # 中山大學選課助手 AI 版
 ## 進入網頁
-https://nsysu-opendev.github.io/SelectorHelperAI/
+https://nsysu-opendev.github.io/NSYSUSelectorHelperAI/
 
 ## 回饋表單：
 https://forms.gle/gFBZDgkSbj85zukP6
